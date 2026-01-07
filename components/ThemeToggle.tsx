@@ -12,7 +12,7 @@ export function ThemeToggle() {
     }, []);
 
     if (!mounted) {
-        return <div className="p-1 h-9 w-28 rounded-lg bg-muted animate-pulse" />;
+        return <div className="p-1 h-9 w-20 rounded-lg bg-muted animate-pulse" />;
     }
 
     return (
@@ -32,14 +32,6 @@ export function ThemeToggle() {
                 title="Dark Mode"
             >
                 <Moon size={14} />
-            </button>
-            <button
-                onClick={() => setTheme('system')}
-                className={`p-1.5 rounded-md transition-all ${theme === 'system' ? 'bg-background text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                title="System Mode"
-            >
-                <Monitor size={14} />
             </button>
         </div>
     );

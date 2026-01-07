@@ -16,6 +16,7 @@ export interface IGame extends Document {
     fileSize: string;
     isFeatured: boolean;
     isActive: boolean;
+    gallery: string[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -27,6 +28,7 @@ const GameSchema: Schema<IGame> = new Schema(
         provider: { type: String, required: true },
         category: { type: String, enum: ['slots', 'table', 'live', 'general'], required: true },
         thumbnail: { type: String, required: true },
+        gallery: { type: [String], default: [] },
         description: { type: String },
         downloadUrl: { type: String },
         referralUrl: { type: String, default: '#' },
@@ -41,5 +43,10 @@ const GameSchema: Schema<IGame> = new Schema(
     { timestamps: true }
 );
 
-const Game: Model<IGame> = mongoose.models.Game || mongoose.model<IGame>('Game', GameSchema);
+// Delete the model if it exists to ensure schema updates are applied
+if (mongoose.models.Game) {
+    delete (mongoose.models as any).Game;
+}
+
+const Game: Model<IGame> = mongoose.model<IGame>('Game', GameSchema);
 export default Game;

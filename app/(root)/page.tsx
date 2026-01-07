@@ -43,13 +43,13 @@ export default async function HomePage() {
         <div className={`bg-background selection:bg-primary/20 ${uiDesign === 'vip' ? 'bg-[radial-gradient(circle_at_top_right,var(--primary-muted),transparent)]' : ''}`}>
             {/* Hero Section */}
             <section className={`relative flex items-center justify-center overflow-hidden border-b border-border/50 ${uiDesign === 'vip' ? 'min-h-[500px] md:h-[650px]' :
-                    uiDesign === 'modern' ? 'min-h-[400px] md:h-[550px] py-20' :
-                        'min-h-[300px] md:h-[450px] py-12'
+                uiDesign === 'modern' ? 'min-h-[400px] md:h-[550px] py-20' :
+                    'min-h-[300px] md:h-[450px] py-12'
                 }`}>
                 <div className={`absolute inset-0 bg-grid-white/[0.02] ${uiDesign === 'classic' ? 'bg-[size:20px_20px]' : 'bg-[size:40px_40px]'}`}></div>
                 <div className={`absolute inset-0 ${uiDesign === 'vip' ? 'bg-gradient-to-tr from-background via-background/80 to-primary/5' :
-                        uiDesign === 'modern' ? 'bg-gradient-to-b from-primary/5 to-background' :
-                            'bg-background/95'
+                    uiDesign === 'modern' ? 'bg-gradient-to-b from-primary/5 to-background' :
+                        'bg-background/95'
                     }`}></div>
 
                 {/* Floating Elements - Only for VIP */}
@@ -61,16 +61,10 @@ export default async function HomePage() {
                 )}
 
                 <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-                    {uiDesign !== 'classic' && (
-                        <div className={`inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500`}>
-                            {uiDesign === 'vip' ? <Crown size={12} /> : <Zap size={12} />}
-                            {uiDesign === 'vip' ? 'VIP ACCESS GRANTED' : 'ELITE ACCESS'}
-                        </div>
-                    )}
 
                     <h1 className={`font-black text-foreground mb-6 uppercase tracking-tighter leading-[0.9] ${uiDesign === 'vip' ? 'text-4xl sm:text-6xl md:text-8xl italic' :
-                            uiDesign === 'modern' ? 'text-3xl sm:text-5xl md:text-7xl' :
-                                'text-2xl sm:text-4xl md:text-6xl'
+                        uiDesign === 'modern' ? 'text-3xl sm:text-5xl md:text-7xl' :
+                            'text-2xl sm:text-4xl md:text-6xl'
                         }`}>
                         {siteName} <span className="text-primary not-italic">{uiDesign === 'classic' ? 'Pro' : 'ELITE'}</span> <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-muted-foreground">RESOURCES</span>
@@ -92,32 +86,6 @@ export default async function HomePage() {
                 </div>
             </section>
 
-            {/* VIP Features Grid */}
-            <section className="container mx-auto px-4 py-20 relative">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                    <div className="p-8 bg-card border border-border rounded-[2.5rem] hover:border-primary/50 transition-all group">
-                        <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
-                            <Shield size={28} />
-                        </div>
-                        <h3 className="text-lg font-black text-foreground uppercase tracking-tight mb-3">Military-Grade Security</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">Every asset is verified and sanitized through our rigorous 7-step security protocol before deployment.</p>
-                    </div>
-                    <div className="p-8 bg-card border border-border rounded-[2.5rem] hover:border-primary/50 transition-all group">
-                        <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500 mb-6 group-hover:scale-110 transition-transform">
-                            <Zap size={28} />
-                        </div>
-                        <h3 className="text-lg font-black text-foreground uppercase tracking-tight mb-3">Instant Deployment</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">Latency-free access to our global content delivery network. Your assets are ready when you are.</p>
-                    </div>
-                    <div className="p-8 bg-card border border-border rounded-[2.5rem] hover:border-primary/50 transition-all group">
-                        <div className="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 transition-transform">
-                            <Globe size={28} />
-                        </div>
-                        <h3 className="text-lg font-black text-foreground uppercase tracking-tight mb-3">Strategic Referrals</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">Proprietary referral algorithms optimized for maximum conversion and sustainable ecosystem growth.</p>
-                    </div>
-                </div>
-            </section>
 
             {/* Featured Games */}
             <section className="container mx-auto px-4 py-20">

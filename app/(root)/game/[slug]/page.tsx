@@ -7,6 +7,7 @@ import { getMetadataForPath } from '@/lib/seo';
 import { Metadata } from 'next';
 import PartnerClickTracker from '@/components/PartnerClickTracker';
 import { ShieldCheck, Download, Star, ExternalLink, Info, Layers, RefreshCw, Sparkles } from 'lucide-react';
+import GameGallery from '@/components/GameGallery';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
@@ -86,12 +87,26 @@ export default async function GamePage({ params }: { params: Promise<{ slug: str
                             </div>
 
                             <div className="space-y-4">
-                                <h1 className={`font-black text-foreground uppercase tracking-tighter leading-none italic ${uiDesign === 'vip' ? 'text-2xl md:text-6xl' :
-                                    uiDesign === 'modern' ? 'text-xl md:text-4xl' :
-                                        'text-lg md:text-3xl'
-                                    }`}>
-                                    {game.title}
-                                </h1>
+                                <div className="flex flex-col md:flex-row items-center justify-center md:items-end gap-4 md:gap-6">
+                                    <h1 className={`font-black text-foreground uppercase tracking-tighter leading-[1.1] italic ${uiDesign === 'vip' ? 'text-2xl md:text-6xl' :
+                                        uiDesign === 'modern' ? 'text-xl md:text-4xl' :
+                                            'text-lg md:text-3xl'
+                                        }`}>
+                                        {game.title}
+                                    </h1>
+                                    {/* Mobile Direct Access Button - Compact */}
+                                    <div className="md:hidden">
+                                        <PartnerClickTracker gameId={game._id.toString()} path={path}>
+                                            <Link
+                                                href={`${path}/download`}
+                                                className={`px-6 py-3 flex items-center gap-2 transition-all active:scale-95 shadow-lg ${uiDesign === 'vip' ? 'bg-primary text-primary-foreground rounded-2xl shadow-primary/20' : 'bg-foreground text-background rounded-lg'}`}
+                                            >
+                                                <Download size={14} />
+                                                <span className="text-[10px] font-black uppercase tracking-widest">Deploy</span>
+                                            </Link>
+                                        </PartnerClickTracker>
+                                    </div>
+                                </div>
                                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
                                     <span className={`px-4 py-1.5 font-black uppercase tracking-widest text-[8px] md:text-[10px] border transition-colors ${uiDesign === 'vip' ? 'bg-primary/10 text-primary border-primary/20 rounded-full' : 'bg-muted text-muted-foreground border-border rounded-lg'
                                         }`}>
@@ -126,70 +141,116 @@ export default async function GamePage({ params }: { params: Promise<{ slug: str
                 </div>
             </div>
 
-            <div className={`container mx-auto px-4 ${uiDesign === 'vip' ? 'py-20 md:py-24' : 'py-12 md:py-16'}`}>
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-                    {/* Main Section */}
-                    <div className="lg:col-span-8 space-y-12">
-                        <section className={`p-8 md:p-12 border transition-all ${uiDesign === 'vip' ? 'bg-card/50 backdrop-blur-md border-primary/10 rounded-[3rem] shadow-xl' :
-                            uiDesign === 'modern' ? 'bg-card border-border rounded-3xl shadow-sm' :
-                                'bg-background border-border rounded-xl'
-                            }`}>
-                            <h2 className="text-lg md:text-2xl font-black text-foreground mb-8 uppercase tracking-tighter italic flex items-center gap-3">
-                                <span className="w-8 h-1.5 bg-primary rounded-full"></span>
-                                {uiDesign === 'classic' ? 'Product Description' : 'Technical Specifications'}
-                            </h2>
-                            <div className={`prose prose-invert max-w-none prose-p:text-muted-foreground prose-strong:text-primary prose-headings:text-foreground prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-headings:italic ${uiDesign === 'vip' ? 'prose-p:text-sm md:prose-p:text-base prose-p:font-medium prose-p:leading-relaxed' : 'prose-sm'
-                                }`}>
-                                <div dangerouslySetInnerHTML={{ __html: game.description || '' }} />
-                            </div>
-                        </section>
+            <div className={`container mx-auto px-4 ${uiDesign === 'vip' ? 'py-10 md:py-24' : 'py-8 md:py-16'}`}>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                    {/* Main Content Column */}
+                    <div className="lg:col-span-8 space-y-8 md:space-y-12 min-w-0 order-2 lg:order-1 flex flex-col">
+                        {/* 1. Visual Evidence (Top on Mobile via order) */}
+                        <div className="order-1 mb-4 md:mb-0">
+                            <GameGallery images={game.gallery} uiDesign={uiDesign as any} title={game.title} />
+                        </div>
 
-                        <section className={`p-8 md:p-12 border transition-all ${uiDesign === 'vip' ? 'bg-card/50 backdrop-blur-md border-primary/10 rounded-[3rem] shadow-xl' :
-                            uiDesign === 'modern' ? 'bg-card border-border rounded-3xl shadow-sm' :
-                                'bg-background border-border rounded-xl'
-                            }`}>
-                            <div className="flex justify-between items-center mb-8">
-                                <h2 className="text-lg md:text-2xl font-black text-foreground uppercase tracking-tighter italic flex items-center gap-3">
-                                    <span className="w-8 h-1.5 bg-primary rounded-full"></span> Related Protocols
+                        {/* 2. Product Description (Bottom on Mobile via order) */}
+                        <div className="order-3">
+                            <section className={`p-5 md:p-12 border transition-all ${uiDesign === 'vip' ? 'bg-card/50 backdrop-blur-md border-primary/10 rounded-3xl md:rounded-[3rem] shadow-xl' :
+                                uiDesign === 'modern' ? 'bg-card border-border rounded-2xl md:rounded-3xl shadow-sm' :
+                                    'bg-background border-border rounded-xl'
+                                }`}>
+                                <h2 className="text-lg md:text-2xl font-black text-foreground mb-8 uppercase tracking-tighter italic flex items-center justify-center gap-3 text-center">
+                                    <span className="w-8 h-1.5 bg-primary rounded-full"></span>
+                                    {uiDesign === 'vip' ? 'Product Identity' : 'Product Description'}
                                 </h2>
-                                <Link href="/games" className="text-[10px] font-black text-primary hover:underline uppercase tracking-widest">Deploy All</Link>
-                            </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                {relatedGames.map((rel) => (
-                                    <Link key={rel._id.toString()} href={`/game/${rel.slug}`} className="group space-y-3">
-                                        <div className={`aspect-square overflow-hidden border transition-all duration-500 scale-100 group-hover:scale-105 ${uiDesign === 'vip' ? 'rounded-[2rem] border-primary/10 group-hover:border-primary shadow-lg' :
-                                            uiDesign === 'modern' ? 'rounded-2xl border-border group-hover:border-primary' :
-                                                'rounded-lg border-border'
-                                            }`}>
-                                            <img src={rel.thumbnail} className="w-full h-full object-cover" />
+                                <div className={`prose dark:prose-invert max-w-4xl mx-auto text-center 
+                                    prose-h2:text-xl md:prose-h2:text-3xl prose-h2:text-foreground prose-h2:italic prose-h2:mt-12 prose-h2:mb-6
+                                    prose-p:text-sm md:prose-p:text-base prose-p:font-medium prose-p:leading-relaxed 
+                                    prose-strong:text-primary 
+                                    overflow-wrap-anywhere`}>
+                                    <div className="description-content max-w-none break-words" dangerouslySetInnerHTML={{ __html: game.description || '' }} />
+                                </div>
+                            </section>
+                        </div>
+
+                        {/* 3. Related Assets (Always bottom) */}
+                        <div className="order-4">
+                            <section className={`p-5 md:p-12 border transition-all ${uiDesign === 'vip' ? 'bg-card/50 backdrop-blur-md border-primary/10 rounded-3xl md:rounded-[3rem] shadow-xl' :
+                                uiDesign === 'modern' ? 'bg-card border-border rounded-2xl md:rounded-3xl shadow-sm' :
+                                    'bg-background border-border rounded-xl'
+                                }`}>
+                                <div className="flex justify-between items-center mb-8">
+                                    <h2 className="text-lg md:text-2xl font-black text-foreground uppercase tracking-tighter italic flex items-center gap-3">
+                                        <span className="w-8 h-1.5 bg-primary rounded-full"></span> Related Protocols
+                                    </h2>
+                                    <Link href="/games" className="text-[10px] font-black text-primary hover:underline uppercase tracking-widest">Deploy All</Link>
+                                </div>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                    {relatedGames.map((rel) => (
+                                        <Link key={rel._id.toString()} href={`/game/${rel.slug}`} className="group space-y-3">
+                                            <div className={`aspect-square overflow-hidden border transition-all duration-500 scale-100 group-hover:scale-105 ${uiDesign === 'vip' ? 'rounded-[2rem] border-primary/10 group-hover:border-primary shadow-lg' :
+                                                uiDesign === 'modern' ? 'rounded-2xl border-border group-hover:border-primary' :
+                                                    'rounded-lg border-border'
+                                                }`}>
+                                                <img src={rel.thumbnail} className="w-full h-full object-cover" />
+                                            </div>
+                                            <div>
+                                                <h4 className="text-[10px] md:text-xs font-black text-foreground uppercase truncate group-hover:text-primary transition-colors">{rel.title}</h4>
+                                                <p className="text-[8px] text-muted-foreground uppercase font-black tracking-widest">{rel.provider}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </section>
+                        </div>
+
+                        {/* 4. Final CTA */}
+                        <div className="order-5">
+                            <section className="pt-12">
+                                <PartnerClickTracker gameId={game._id.toString()} path={path}>
+                                    <Link
+                                        href={`${path}/download`}
+                                        className={`w-full py-10 md:py-16 flex flex-col items-center justify-center gap-4 transition-all active:scale-95 group shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] ${uiDesign === 'vip' ? 'bg-primary text-primary-foreground rounded-3xl md:rounded-[4rem] shadow-primary/20 hover:opacity-95' :
+                                            uiDesign === 'modern' ? 'bg-emerald-600 text-white rounded-3xl hover:bg-emerald-700' :
+                                                'bg-foreground text-background rounded-2xl'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`p-4 bg-background/20 backdrop-blur-md ${uiDesign === 'vip' ? 'rounded-2xl' : 'rounded-xl'}`}>
+                                                <Download size={32} className="animate-bounce" />
+                                            </div>
+                                            <div className="text-left">
+                                                <span className="text-lg md:text-3xl font-black uppercase tracking-[0.2em] block leading-none mb-1">Final Deployment</span>
+                                                <span className="text-[10px] md:text-sm font-black opacity-60 uppercase tracking-widest">Execute master download protocol</span>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h4 className="text-[10px] md:text-xs font-black text-foreground uppercase truncate group-hover:text-primary transition-colors">{rel.title}</h4>
-                                            <p className="text-[8px] text-muted-foreground uppercase font-black tracking-widest">{rel.provider}</p>
+                                        <div className={`px-8 py-2 border border-current opacity-30 group-hover:opacity-100 transition-opacity rounded-full text-[10px] font-black uppercase tracking-[0.3em]`}>
+                                            Verify {game.fileSize || '38 MB'} Integrity
                                         </div>
                                     </Link>
-                                ))}
-                            </div>
-                        </section>
+                                </PartnerClickTracker>
+                            </section>
+                        </div>
                     </div>
 
-                    {/* Sidebar Actions */}
-                    <div className="lg:col-span-4 space-y-8">
-                        <aside className={`p-8 md:p-10 border transition-all sticky top-32 ${uiDesign === 'vip' ? 'bg-card rounded-[3.5rem] border-primary/20 shadow-2xl shadow-primary/5 ring-1 ring-primary/10' :
-                            uiDesign === 'modern' ? 'bg-card border-border rounded-[2.5rem] shadow-xl' :
+                    {/* Technical Sidebar Column */}
+                    <div className="lg:col-span-4 min-w-0 order-1 lg:order-2">
+                        <aside className={`p-5 md:p-10 border transition-all sticky top-32 ${uiDesign === 'vip' ? 'bg-card rounded-3xl md:rounded-[3.5rem] border-primary/20 shadow-2xl shadow-primary/5 ring-1 ring-primary/10' :
+                            uiDesign === 'modern' ? 'bg-card border-border rounded-2xl md:rounded-[2.5rem] shadow-xl' :
                                 'bg-muted border-border rounded-2xl shadow-sm'
                             }`}>
                             <div className="space-y-8">
-                                <div>
-                                    <h3 className="text-base md:text-lg font-black text-foreground uppercase tracking-tighter italic mb-3">Deployment Hub</h3>
-                                    <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest leading-relaxed">Verified binary deployment for secure tactical discovery. SHA-256 integrity monitored.</p>
+                                <div className="flex items-center gap-4 group">
+                                    <div className={`w-12 h-12 md:w-16 md:h-16 flex-shrink-0 overflow-hidden border border-border transition-transform group-hover:scale-105 shadow-sm ${uiDesign === 'vip' ? 'rounded-2xl' : 'rounded-xl'}`}>
+                                        <img src={game.thumbnail} alt={game.title} className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <h3 className="text-sm md:text-base font-black text-foreground uppercase tracking-tight italic leading-tight truncate">{game.title}</h3>
+                                        <p className="text-[9px] text-primary font-black uppercase tracking-widest mt-1">Ready for Secure Access</p>
+                                    </div>
                                 </div>
+                                {/* ... rest of sidebar remains the same ... */}
 
                                 <PartnerClickTracker gameId={game._id.toString()} path={path}>
-                                    <a
-                                        href={game.referralUrl || '#'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                    <Link
+                                        href={`${path}/download`}
                                         className={`w-full py-6 flex flex-col items-center justify-center gap-1 transition-all active:scale-95 group shadow-2xl ${uiDesign === 'vip' ? 'bg-primary text-primary-foreground rounded-3xl shadow-primary/30 hover:opacity-90' :
                                             uiDesign === 'modern' ? 'bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700' :
                                                 'bg-foreground text-background rounded-xl'
@@ -199,7 +260,7 @@ export default async function GamePage({ params }: { params: Promise<{ slug: str
                                             <Download size={18} /> Download Protocol
                                         </span>
                                         <span className="text-[8px] font-black opacity-60 uppercase tracking-tighter">Secure Build {game.version || '1.0.0'}</span>
-                                    </a>
+                                    </Link>
                                 </PartnerClickTracker>
 
                                 <div className="space-y-4 pt-4 border-t border-border/50">
@@ -209,12 +270,12 @@ export default async function GamePage({ params }: { params: Promise<{ slug: str
                                         { icon: <RefreshCw size={14} />, label: 'Last Sync', value: 'Live Feed' },
                                         { icon: <ExternalLink size={14} />, label: 'Distribution', value: 'Global Node' },
                                     ].map((spec, i) => (
-                                        <div key={i} className="flex items-center justify-between">
-                                            <div className="flex items-center gap-3 text-muted-foreground uppercase tracking-widest font-black text-[9px]">
+                                        <div key={i} className="flex items-center justify-between py-2 border-b border-border/10 last:border-0 group">
+                                            <div className="flex items-center gap-2 text-muted-foreground transition-colors">
                                                 <span className="text-primary">{spec.icon}</span>
-                                                {spec.label}
+                                                <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.1em] md:tracking-widest">{spec.label}</span>
                                             </div>
-                                            <div className="text-[10px] font-black text-foreground uppercase tracking-tight italic">{spec.value}</div>
+                                            <div className="text-[9px] md:text-[10px] font-black text-foreground uppercase tracking-tight italic">{spec.value}</div>
                                         </div>
                                     ))}
                                 </div>

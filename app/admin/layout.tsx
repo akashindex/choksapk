@@ -32,8 +32,8 @@ export default async function AdminLayout({
             }`}>
             {/* Top Header - Permanent */}
             <header className={`border-b border-border flex items-center justify-between px-6 sticky top-0 z-50 transition-all duration-500 ${uiDesign === 'vip' ? 'h-20 bg-card/80 backdrop-blur-xl border-primary/10' :
-                    uiDesign === 'modern' ? 'h-16 bg-card' :
-                        'h-16 bg-card shadow-sm'
+                uiDesign === 'modern' ? 'h-16 bg-card' :
+                    'h-16 bg-card shadow-sm'
                 }`}>
                 {/* Left: Store Switcher / Logo */}
                 <div className="flex items-center gap-3 w-64">
@@ -88,7 +88,8 @@ export default async function AdminLayout({
                         <NavLink href="/admin/games" icon={<Gamepad2 size={18} />} label="Game Assets" uiDesign={uiDesign} />
                         <NavLink href="/admin/scraper" icon={<Download size={18} />} label="Asset Scraper" uiDesign={uiDesign} />
 
-                        <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-4 mt-8 opacity-50">Intelligence</p>
+                        <p className="px-3 text-[9px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-4 mt-8 opacity-50">Content & Marketing</p>
+                        <NavLink href="/admin/blogs" icon={<FileText size={18} />} label="Blog Editor" uiDesign={uiDesign} />
                         <NavLink href="/admin/seo" icon={<Search size={18} />} label="SEO Matrix" uiDesign={uiDesign} />
                         <NavLink href="/admin/users" icon={<Users size={18} />} label="User Protocols" uiDesign={uiDesign} />
 
@@ -103,8 +104,8 @@ export default async function AdminLayout({
 
                 {/* Main Content Area */}
                 <main className={`flex-1 overflow-y-auto transition-colors duration-500 ${uiDesign === 'vip' ? 'bg-[#fafafa] dark:bg-[#0a0a0a] p-8 md:p-12' :
-                        uiDesign === 'modern' ? 'bg-background p-6 md:p-8' :
-                            'bg-background p-4 md:p-6'
+                    uiDesign === 'modern' ? 'bg-background p-6 md:p-8' :
+                        'bg-background p-4 md:p-6'
                     }`}>
                     <div className="max-w-7xl mx-auto">
                         {children}
@@ -118,8 +119,8 @@ export default async function AdminLayout({
 function NavLink({ href, icon, label, uiDesign }: { href: string; icon: React.ReactNode; label: string; uiDesign: string }) {
     return (
         <Link href={href} className={`flex items-center gap-3 px-4 py-3 text-muted-foreground hover:text-foreground transition-all group relative overflow-hidden ${uiDesign === 'vip' ? 'hover:bg-primary/5 rounded-2xl' :
-                uiDesign === 'modern' ? 'hover:bg-muted rounded-xl' :
-                    'hover:bg-muted rounded-md'
+            uiDesign === 'modern' ? 'hover:bg-muted rounded-xl' :
+                'hover:bg-muted rounded-md'
             }`}>
             <span className="group-hover:text-primary transition-colors flex-shrink-0">{icon}</span>
             <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>

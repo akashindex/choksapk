@@ -26,6 +26,7 @@ export default function GameForm({ initialData }: { initialData?: any }) {
         description: initialData?.description || '',
         isFeatured: initialData?.isFeatured || false,
         isActive: initialData?.isActive ?? true,
+        gallery: initialData?.gallery || [],
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,6 +59,41 @@ export default function GameForm({ initialData }: { initialData?: any }) {
         } catch (err) {
             console.error("Upload failed", err);
         }
+    };
+
+    const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
+
+        const files = Array.from(e.target.files);
+        setLoading(true);
+
+        try {
+            const uploadPromises = files.map(async (file) => {
+                const data = new FormData();
+                data.append('file', file);
+                const res = await fetch('/api/upload', { method: 'POST', body: data });
+                const json = await res.json();
+                return json.url;
+            });
+
+            const urls = await Promise.all(uploadPromises);
+            const validUrls = urls.filter(url => !!url);
+            setFormData(prev => ({
+                ...prev,
+                gallery: [...prev.gallery, ...validUrls]
+            }));
+        } catch (err) {
+            console.error("Gallery Upload failed", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const removeGalleryImage = (index: number) => {
+        setFormData(prev => ({
+            ...prev,
+            gallery: prev.gallery.filter((_: string, i: number) => i !== index)
+        }));
     };
 
     const handleAIOptimize = async (mode: 'humanize' | 'seo' | 'matrix') => {
@@ -224,7 +260,36 @@ export default function GameForm({ initialData }: { initialData?: any }) {
 
             <div className="space-y-4 relative z-10">
                 <div className="flex items-center justify-between ml-1">
-                    <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Technical Specification (Rich Text)</label>
+                    <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Visual Evidence (Image Gallery)</label>
+                    <label className="cursor-pointer text-[8px] font-black uppercase tracking-widest bg-foreground text-background px-4 py-2 rounded-lg hover:opacity-90 transition-all flex items-center gap-2">
+                        Add screenshots
+                        <input type="file" hidden multiple onChange={handleGalleryUpload} accept="image/*" />
+                    </label>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
+                    {formData.gallery.map((url: string, index: number) => (
+                        <div key={index} className="relative aspect-video bg-muted/50 rounded-xl border border-border group overflow-hidden">
+                            <img src={url} alt={`Gallery ${index}`} className="w-full h-full object-cover" />
+                            <button
+                                type="button"
+                                onClick={() => removeGalleryImage(index)}
+                                className="absolute top-2 right-2 p-1.5 bg-destructive text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity active:scale-95"
+                            >
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                        </div>
+                    ))}
+                    {formData.gallery.length === 0 && (
+                        <div className="col-span-full py-8 text-center border-2 border-dashed border-border rounded-2xl">
+                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] opacity-30 italic">No visual protocols added to this asset's gallery</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <div className="space-y-4 relative z-10">
+                <div className="flex items-center justify-between ml-1">
+                    <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Product Description (Rich Text)</label>
                     <div className="flex gap-2">
                         <button
                             type="button"

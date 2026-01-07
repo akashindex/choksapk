@@ -179,7 +179,6 @@ export default function SettingsPage() {
     const tabs = [
         { id: 'branding', label: 'Branding', icon: <ImageIcon size={16} /> },
         { id: 'seo', label: 'SEO', icon: <BarChart size={16} /> },
-        { id: 'contact', label: 'Contact', icon: <Globe size={16} /> },
         { id: 'social', label: 'Social', icon: <LinkIcon size={16} /> },
         { id: 'theme', label: 'Theme', icon: <Palette size={16} /> },
         { id: 'ai', label: 'AI Integration', icon: <Activity size={16} /> },
@@ -313,44 +312,6 @@ export default function SettingsPage() {
                     </div>
                 )}
 
-                {activeTab === 'contact' && (
-                    <div className="space-y-8">
-                        <h2 className="text-2xl font-black text-foreground uppercase tracking-tight mb-6">Contact Information</h2>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <InputField
-                                label="Contact Email"
-                                type="email"
-                                value={settings.contactEmail}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, contactEmail: e.target.value })}
-                                placeholder="contact@yoursite.com"
-                            />
-                            <InputField
-                                label="Support Email"
-                                type="email"
-                                value={settings.supportEmail}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, supportEmail: e.target.value })}
-                                placeholder="support@yoursite.com"
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <InputField
-                                label="Contact Phone"
-                                type="tel"
-                                value={settings.contactPhone}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, contactPhone: e.target.value })}
-                                placeholder="+1 (555) 123-4567"
-                            />
-                            <InputField
-                                label="Physical Address"
-                                value={settings.address}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, address: e.target.value })}
-                                placeholder="123 Main St, City, Country"
-                            />
-                        </div>
-                    </div>
-                )}
 
                 {activeTab === 'social' && (
                     <div className="space-y-8">
@@ -396,36 +357,6 @@ export default function SettingsPage() {
                             </div>
                         </section>
 
-                        <section className="pt-8 border-t border-border">
-                            <h2 className="text-2xl font-black text-foreground uppercase tracking-tight mb-2">Architectural Style</h2>
-                            <p className="text-xs text-muted-foreground mb-8 uppercase tracking-widest font-bold">Select the visual framework for your storefront</p>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                {[
-                                    { id: 'classic', name: 'Classic Protocol', desc: 'Conservative, high-density information layout with traditional grid systems.' },
-                                    { id: 'modern', name: 'Modern Aegis', desc: 'Balanced, minimal design with focus on typography and whitespace.' },
-                                    { id: 'vip', name: 'VIP Executive', desc: 'High-end aesthetic featuring glassmorphism, gradients, and elite interactions.' }
-                                ].map((style) => (
-                                    <button
-                                        key={style.id}
-                                        onClick={() => setSettings({ ...settings, uiDesign: style.id as any })}
-                                        className={`p-6 rounded-[2rem] border-2 text-left transition-all ${settings.uiDesign === style.id
-                                                ? 'border-primary bg-primary/5 shadow-xl shadow-primary/10'
-                                                : 'border-border bg-card hover:border-muted-foreground/30'
-                                            }`}
-                                    >
-                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${settings.uiDesign === style.id ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                                            }`}>
-                                            {style.id === 'classic' && <Globe size={20} />}
-                                            {style.id === 'modern' && <Activity size={20} />}
-                                            {style.id === 'vip' && <Crown size={20} />}
-                                        </div>
-                                        <h3 className="font-black text-foreground uppercase tracking-tight mb-2">{style.name}</h3>
-                                        <p className="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-wide font-medium">{style.desc}</p>
-                                    </button>
-                                ))}
-                            </div>
-                        </section>
                     </div>
                 )}
 

@@ -16,7 +16,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
         await dbConnect();
         const body = await req.json();
-        const game = await Game.findByIdAndUpdate(id, body, { new: true });
+        console.log('Updating game with body:', { ...body, description: body.description?.substring(0, 50) + '...' });
+        const game = await Game.findByIdAndUpdate(id, { $set: body }, { new: true, runValidators: true });
 
         if (!game) return NextResponse.json({ error: 'Game not found' }, { status: 404 });
         return NextResponse.json({ game });

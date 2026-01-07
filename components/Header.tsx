@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Menu, Search, User, Crown, Zap, Globe, Shield, Activity } from 'lucide-react';
+import { Menu, Search, User, Globe, Shield, Activity, Info } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useRouter } from 'next/navigation';
@@ -71,19 +71,20 @@ export default function Header() {
                     <div className={`${uiDesign === 'vip' ? 'p-1.5 bg-primary/10 rounded-xl border border-primary/20 shadow-inner' : ''}`}>
                         <img src={logoUrl} alt="" className={`${uiDesign === 'vip' ? 'w-8 h-8 md:w-10 md:h-10' : 'w-7 h-7 md:w-8 md:h-8'} object-contain`} />
                     </div>
-                    <span>{siteName}</span>
+                    <span className="whitespace-nowrap">{siteName}</span>
                 </Link>
 
                 <nav className={`hidden lg:flex gap-8 items-center font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground mr-auto`}>
                     {[
                         { label: 'Home', href: '/' },
                         { label: 'Route Vault', href: '/games', icon: <Shield size={10} className="text-primary/50" /> },
-                        { label: 'Intelligence', href: '/about' }
+                        { label: 'Blog', href: '/blog', icon: <Globe size={10} className="text-primary/50" /> },
+                        { label: 'About', href: '/about', icon: <Info size={10} className="text-primary/50" /> }
                     ].map((link) => (
-                        <Link key={link.label} href={link.href} className="flex items-center gap-1.5 hover:text-primary transition-colors group">
+                        <Link key={link.label} href={link.href} className="flex items-center gap-1.5 hover:text-primary transition-colors group relative py-2">
                             {uiDesign === 'vip' && link.icon}
                             {link.label}
-                            {uiDesign === 'vip' && <span className="w-0 group-hover:w-full h-0.5 bg-primary mt-1 absolute bottom-0 transition-all duration-300"></span>}
+                            {uiDesign === 'vip' && <span className="w-0 group-hover:w-full h-0.5 bg-primary absolute bottom-0 left-0 transition-all duration-300"></span>}
                         </Link>
                     ))}
                 </nav>
@@ -148,18 +149,8 @@ export default function Header() {
                         )}
                     </form>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4">
                         <ThemeToggle />
-
-                        {uiDesign === 'vip' && (
-                            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-[8px] font-black uppercase tracking-widest">
-                                <Crown size={10} /> ELITE
-                            </div>
-                        )}
-
-                        <button className="sm:hidden p-2 hover:bg-accent rounded-full text-muted-foreground hover:text-foreground transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                            <Search size={20} />
-                        </button>
 
                         <button className="lg:hidden p-2 text-muted-foreground hover:text-primary transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                             <Menu size={24} />
@@ -192,8 +183,11 @@ export default function Header() {
                         <Link href="/games" onClick={() => setMobileMenuOpen(false)} className="text-[11px] font-black text-foreground hover:text-primary uppercase tracking-[0.2em] transition-colors flex items-center gap-3">
                             {uiDesign === 'vip' && <Shield size={14} className="text-primary/50" />} Route Vault
                         </Link>
+                        <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="text-[11px] font-black text-foreground hover:text-primary uppercase tracking-[0.2em] transition-colors flex items-center gap-3">
+                            {uiDesign === 'vip' && <Globe size={14} className="text-primary/50" />} Blog
+                        </Link>
                         <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="text-[11px] font-black text-foreground hover:text-primary uppercase tracking-[0.2em] transition-colors flex items-center gap-3">
-                            {uiDesign === 'vip' && <Activity size={14} className="text-primary/50" />} Intelligence
+                            {uiDesign === 'vip' && <Info size={14} className="text-primary/50" />} About
                         </Link>
                     </div>
                 </div>

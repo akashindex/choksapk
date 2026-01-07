@@ -33,6 +33,7 @@ export async function POST(req: Request) {
 
         await dbConnect();
         const body = await req.json();
+        console.log('Creating game with body:', { ...body, description: body.description?.substring(0, 50) + '...' });
         const game = await Game.create(body);
         return NextResponse.json({ game }, { status: 201 });
     } catch (error) {
