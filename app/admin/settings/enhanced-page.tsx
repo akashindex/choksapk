@@ -2,8 +2,39 @@
 import { useState, useEffect } from 'react';
 import { Save, Palette, Globe, Link as LinkIcon, Activity, Upload, Image as ImageIcon, FileText, BarChart, Settings2 } from 'lucide-react';
 
+interface ISettings {
+    siteName: string;
+    siteTagline: string;
+    logoUrl: string;
+    logoDarkUrl: string;
+    faviconUrl: string;
+    ogImageUrl: string;
+    metaTitle: string;
+    metaDescription: string;
+    metaKeywords: string[];
+    contactEmail: string;
+    supportEmail: string;
+    contactPhone: string;
+    address: string;
+    socialLinks: Record<string, string>;
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+    googleAnalyticsId: string;
+    facebookPixelId: string;
+    termsUrl: string;
+    privacyUrl: string;
+    aboutUrl: string;
+    maintenanceMode: boolean;
+    maintenanceMessage: string;
+    registrationEnabled: boolean;
+    commentsEnabled: boolean;
+    footerText: string;
+    copyrightText: string;
+}
+
 export default function EnhancedSettingsPage() {
-    const [settings, setSettings] = useState<any>({
+    const [settings, setSettings] = useState<ISettings>({
         siteName: '',
         siteTagline: '',
         logoUrl: '',
@@ -154,8 +185,8 @@ export default function EnhancedSettingsPage() {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex items-center gap-2 px-6 py-3 text-[10px] font-black tracking-widest transition-all rounded-2xl whitespace-nowrap uppercase ${activeTab === tab.id
-                                ? 'bg-background text-primary shadow-xl ring-1 ring-primary/20'
-                                : 'text-muted-foreground hover:text-foreground'
+                            ? 'bg-background text-primary shadow-xl ring-1 ring-primary/20'
+                            : 'text-muted-foreground hover:text-foreground'
                             }`}
                     >
                         {tab.icon} {tab.label}
@@ -172,13 +203,13 @@ export default function EnhancedSettingsPage() {
                             <InputField
                                 label="Site Name"
                                 value={settings.siteName}
-                                onChange={(e) => setSettings({ ...settings, siteName: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, siteName: e.target.value })}
                                 placeholder="Enter your site name"
                             />
                             <InputField
                                 label="Site Tagline"
                                 value={settings.siteTagline}
-                                onChange={(e) => setSettings({ ...settings, siteTagline: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, siteTagline: e.target.value })}
                                 placeholder="Your site's tagline or slogan"
                             />
                         </div>
@@ -187,16 +218,16 @@ export default function EnhancedSettingsPage() {
                             <FileUploadField
                                 label="Logo URL (Light Mode)"
                                 value={settings.logoUrl}
-                                onChange={(e) => setSettings({ ...settings, logoUrl: e.target.value })}
-                                onFileUpload={(e) => handleFileUpload(e, 'logoUrl')}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, logoUrl: e.target.value })}
+                                onFileUpload={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'logoUrl')}
                                 uploading={uploading}
                                 preview={settings.logoUrl}
                             />
                             <FileUploadField
                                 label="Logo URL (Dark Mode)"
                                 value={settings.logoDarkUrl}
-                                onChange={(e) => setSettings({ ...settings, logoDarkUrl: e.target.value })}
-                                onFileUpload={(e) => handleFileUpload(e, 'logoDarkUrl')}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, logoDarkUrl: e.target.value })}
+                                onFileUpload={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'logoDarkUrl')}
                                 uploading={uploading}
                                 preview={settings.logoDarkUrl}
                             />
@@ -206,16 +237,16 @@ export default function EnhancedSettingsPage() {
                             <FileUploadField
                                 label="Favicon URL"
                                 value={settings.faviconUrl}
-                                onChange={(e) => setSettings({ ...settings, faviconUrl: e.target.value })}
-                                onFileUpload={(e) => handleFileUpload(e, 'faviconUrl')}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, faviconUrl: e.target.value })}
+                                onFileUpload={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'faviconUrl')}
                                 uploading={uploading}
                                 preview={settings.faviconUrl}
                             />
                             <FileUploadField
                                 label="OG Image (Social Share)"
                                 value={settings.ogImageUrl}
-                                onChange={(e) => setSettings({ ...settings, ogImageUrl: e.target.value })}
-                                onFileUpload={(e) => handleFileUpload(e, 'ogImageUrl')}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, ogImageUrl: e.target.value })}
+                                onFileUpload={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'ogImageUrl')}
                                 uploading={uploading}
                                 preview={settings.ogImageUrl}
                             />
@@ -230,14 +261,14 @@ export default function EnhancedSettingsPage() {
                         <InputField
                             label="Meta Title"
                             value={settings.metaTitle}
-                            onChange={(e) => setSettings({ ...settings, metaTitle: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, metaTitle: e.target.value })}
                             placeholder="Your site's meta title (50-60 characters)"
                         />
 
                         <TextareaField
                             label="Meta Description"
                             value={settings.metaDescription}
-                            onChange={(e) => setSettings({ ...settings, metaDescription: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSettings({ ...settings, metaDescription: e.target.value })}
                             placeholder="Your site's meta description (150-160 characters)"
                             rows={3}
                         />
@@ -245,7 +276,7 @@ export default function EnhancedSettingsPage() {
                         <InputField
                             label="Meta Keywords (comma separated)"
                             value={settings.metaKeywords?.join(', ') || ''}
-                            onChange={(e) => updateKeywords(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateKeywords(e.target.value)}
                             placeholder="gaming, casino, premium, assets, etc."
                         />
                     </div>
@@ -260,14 +291,14 @@ export default function EnhancedSettingsPage() {
                                 label="Contact Email"
                                 type="email"
                                 value={settings.contactEmail}
-                                onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, contactEmail: e.target.value })}
                                 placeholder="contact@yoursite.com"
                             />
                             <InputField
                                 label="Support Email"
                                 type="email"
                                 value={settings.supportEmail}
-                                onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, supportEmail: e.target.value })}
                                 placeholder="support@yoursite.com"
                             />
                         </div>
@@ -277,13 +308,13 @@ export default function EnhancedSettingsPage() {
                                 label="Contact Phone"
                                 type="tel"
                                 value={settings.contactPhone}
-                                onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, contactPhone: e.target.value })}
                                 placeholder="+1 (555) 123-4567"
                             />
                             <InputField
                                 label="Physical Address"
                                 value={settings.address}
-                                onChange={(e) => setSettings({ ...settings, address: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, address: e.target.value })}
                                 placeholder="123 Main St, City, Country"
                             />
                         </div>
@@ -300,7 +331,7 @@ export default function EnhancedSettingsPage() {
                                     key={platform}
                                     label={platform.charAt(0).toUpperCase() + platform.slice(1)}
                                     value={settings.socialLinks?.[platform] || ''}
-                                    onChange={(e) => setSettings({
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({
                                         ...settings,
                                         socialLinks: { ...settings.socialLinks, [platform]: e.target.value }
                                     })}
@@ -319,17 +350,17 @@ export default function EnhancedSettingsPage() {
                             <ColorPickerField
                                 label="Primary Color"
                                 value={settings.primaryColor}
-                                onChange={(e) => setSettings({ ...settings, primaryColor: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, primaryColor: e.target.value })}
                             />
                             <ColorPickerField
                                 label="Secondary Color"
                                 value={settings.secondaryColor}
-                                onChange={(e) => setSettings({ ...settings, secondaryColor: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, secondaryColor: e.target.value })}
                             />
                             <ColorPickerField
                                 label="Accent Color"
                                 value={settings.accentColor}
-                                onChange={(e) => setSettings({ ...settings, accentColor: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, accentColor: e.target.value })}
                             />
                         </div>
                     </div>
@@ -342,14 +373,14 @@ export default function EnhancedSettingsPage() {
                         <InputField
                             label="Google Analytics ID"
                             value={settings.googleAnalyticsId}
-                            onChange={(e) => setSettings({ ...settings, googleAnalyticsId: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, googleAnalyticsId: e.target.value })}
                             placeholder="G-XXXXXXXXXX"
                         />
 
                         <InputField
                             label="Facebook Pixel ID"
                             value={settings.facebookPixelId}
-                            onChange={(e) => setSettings({ ...settings, facebookPixelId: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, facebookPixelId: e.target.value })}
                             placeholder="123456789"
                         />
                     </div>
@@ -362,28 +393,28 @@ export default function EnhancedSettingsPage() {
                         <InputField
                             label="Terms of Service URL"
                             value={settings.termsUrl}
-                            onChange={(e) => setSettings({ ...settings, termsUrl: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, termsUrl: e.target.value })}
                             placeholder="/terms"
                         />
 
                         <InputField
                             label="Privacy Policy URL"
                             value={settings.privacyUrl}
-                            onChange={(e) => setSettings({ ...settings, privacyUrl: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, privacyUrl: e.target.value })}
                             placeholder="/privacy"
                         />
 
                         <InputField
                             label="About Page URL"
                             value={settings.aboutUrl}
-                            onChange={(e) => setSettings({ ...settings, aboutUrl: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, aboutUrl: e.target.value })}
                             placeholder="/about"
                         />
 
                         <TextareaField
                             label="Footer Text"
                             value={settings.footerText}
-                            onChange={(e) => setSettings({ ...settings, footerText: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSettings({ ...settings, footerText: e.target.value })}
                             placeholder="Custom footer text..."
                             rows={2}
                         />
@@ -391,7 +422,7 @@ export default function EnhancedSettingsPage() {
                         <InputField
                             label="Copyright Text"
                             value={settings.copyrightText}
-                            onChange={(e) => setSettings({ ...settings, copyrightText: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, copyrightText: e.target.value })}
                             placeholder="© 2024 YourSite. All rights reserved."
                         />
                     </div>
@@ -404,7 +435,7 @@ export default function EnhancedSettingsPage() {
                         <ToggleField
                             label="Maintenance Mode"
                             checked={settings.maintenanceMode}
-                            onChange={(checked) => setSettings({ ...settings, maintenanceMode: checked })}
+                            onChange={(checked: boolean) => setSettings({ ...settings, maintenanceMode: checked })}
                             description="Enable to show maintenance page to visitors"
                         />
 
@@ -412,7 +443,7 @@ export default function EnhancedSettingsPage() {
                             <TextareaField
                                 label="Maintenance Message"
                                 value={settings.maintenanceMessage}
-                                onChange={(e) => setSettings({ ...settings, maintenanceMessage: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSettings({ ...settings, maintenanceMessage: e.target.value })}
                                 placeholder="We're currently performing maintenance. We'll be back soon!"
                                 rows={2}
                             />
@@ -421,14 +452,14 @@ export default function EnhancedSettingsPage() {
                         <ToggleField
                             label="User Registration"
                             checked={settings.registrationEnabled}
-                            onChange={(checked) => setSettings({ ...settings, registrationEnabled: checked })}
+                            onChange={(checked: boolean) => setSettings({ ...settings, registrationEnabled: checked })}
                             description="Allow new users to register"
                         />
 
                         <ToggleField
                             label="Comments"
                             checked={settings.commentsEnabled}
-                            onChange={(checked) => setSettings({ ...settings, commentsEnabled: checked })}
+                            onChange={(checked: boolean) => setSettings({ ...settings, commentsEnabled: checked })}
                             description="Enable comments on blog posts and games"
                         />
                     </div>
@@ -438,8 +469,47 @@ export default function EnhancedSettingsPage() {
     );
 }
 
+// Helper Component Interfaces
+interface InputFieldProps {
+    label: string;
+    type?: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    placeholder?: string;
+}
+
+interface TextareaFieldProps {
+    label: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    placeholder?: string;
+    rows?: number;
+}
+
+interface ColorPickerFieldProps {
+    label: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+interface FileUploadFieldProps {
+    label: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    uploading: boolean;
+    preview?: string;
+}
+
+interface ToggleFieldProps {
+    label: string;
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+    description?: string;
+}
+
 // Helper Components
-function InputField({ label, type = 'text', value, onChange, placeholder }: any) {
+function InputField({ label, type = 'text', value, onChange, placeholder }: InputFieldProps) {
     return (
         <div className="space-y-2">
             <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{label}</label>
@@ -454,7 +524,7 @@ function InputField({ label, type = 'text', value, onChange, placeholder }: any)
     );
 }
 
-function TextareaField({ label, value, onChange, placeholder, rows = 3 }: any) {
+function TextareaField({ label, value, onChange, placeholder, rows = 3 }: TextareaFieldProps) {
     return (
         <div className="space-y-2">
             <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{label}</label>
@@ -469,7 +539,7 @@ function TextareaField({ label, value, onChange, placeholder, rows = 3 }: any) {
     );
 }
 
-function ColorPickerField({ label, value, onChange }: any) {
+function ColorPickerField({ label, value, onChange }: ColorPickerFieldProps) {
     return (
         <div className="space-y-2">
             <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{label}</label>
@@ -492,7 +562,7 @@ function ColorPickerField({ label, value, onChange }: any) {
     );
 }
 
-function FileUploadField({ label, value, onChange, onFileUpload, uploading, preview }: any) {
+function FileUploadField({ label, value, onChange, onFileUpload, uploading, preview }: FileUploadFieldProps) {
     return (
         <div className="space-y-3">
             <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{label}</label>
@@ -519,7 +589,7 @@ function FileUploadField({ label, value, onChange, onFileUpload, uploading, prev
     );
 }
 
-function ToggleField({ label, checked, onChange, description }: any) {
+function ToggleField({ label, checked, onChange, description }: ToggleFieldProps) {
     return (
         <div className="flex items-start justify-between gap-4 p-4 bg-muted/30 rounded-xl border border-border">
             <div>
