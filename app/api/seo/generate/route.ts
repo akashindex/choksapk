@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
         await dbConnect();
         const settings = await SiteSettings.findOne();
-        const apiKey = (settings?.geminiKey || process.env.GEMINI_API_KEY || 'AIzaSyD3iCK7pSAnu8UL1eFrU735jeEdMpbadtg').trim();
+        const apiKey = (settings?.geminiKey || process.env.GEMINI_API_KEY || '').trim();
 
         if (!apiKey) {
             return NextResponse.json({ error: 'Gemini API Key not configured' }, { status: 500 });
